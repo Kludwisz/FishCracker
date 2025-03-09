@@ -7,7 +7,7 @@
    <children>
       <HBox prefHeight="26.0" prefWidth="600.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
-            <MenuBar HBox.hgrow="ALWAYS">
+            <MenuBar prefHeight="26.0" prefWidth="394.0" HBox.hgrow="ALWAYS">
               <menus>
                 <Menu mnemonicParsing="false" text="Actions">
                   <items>

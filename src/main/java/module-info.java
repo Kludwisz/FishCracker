@@ -8,4 +8,6 @@ module com.kludwisz.fishcracker {
 
     opens com.kludwisz.fishcracker to javafx.fxml;
     exports com.kludwisz.fishcracker;
+    exports com.kludwisz.fishcracker.controls;
+    opens com.kludwisz.fishcracker.controls to javafx.fxml;
 }

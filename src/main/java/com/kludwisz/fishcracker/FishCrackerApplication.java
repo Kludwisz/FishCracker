@@ -1,5 +1,6 @@
 package com.kludwisz.fishcracker;
 
+import com.kludwisz.fishcracker.controls.GlobalKeyListener;
 import com.kludwisz.fishcracker.measurment.MeasurmentParser;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -11,6 +12,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class FishCrackerApplication extends Application {
     private final MeasurmentParser measurmentParser = new MeasurmentParser();
@@ -21,6 +23,8 @@ public class FishCrackerApplication extends Application {
         AnchorPane rootPane = fxmlLoader.load();
         Label angleDisplay = (Label) rootPane.lookup("#angleDisplay");
         Scene scene = new Scene(rootPane, 480, 300);
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("dark-mode.css")).toExternalForm());
+
         stage.setTitle("FishCracker v1.0");
         stage.setScene(scene);
         stage.show();
@@ -33,11 +37,11 @@ public class FishCrackerApplication extends Application {
         GlobalKeyListener f3cListener = new GlobalKeyListener();
         f3cListener.setF3CAction(
                 v -> Platform.runLater(() -> {
-                    // copy clipboard contents to a string
                     Clipboard clipboard = Clipboard.getSystemClipboard();
                     String content = clipboard.getString();
-                    if (measurmentParser.parseAngleMeasurment(content)) { // /execute in minecraft:overworld run tp @s -553.92 64.05 -1034.76 9.99 -5.26
-                        System.out.println("correct measurment"); // /execute in minecraft:overworld run tp @s -553.92 64.05 -1034.76 2.62 8.41
+
+                    if (measurmentParser.parseAngleMeasurment(content)) {
+                        System.out.println("correct measurment");
                         angleDisplay.setText(measurmentParser.getMeasurmentAsString());
                     }
                     else {
@@ -48,10 +52,6 @@ public class FishCrackerApplication extends Application {
         );
         GlobalKeyListener.register(f3cListener);
     }
-
-
-
-
 
     public static void main(String[] args) {
         launch();

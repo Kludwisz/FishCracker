@@ -1,4 +1,4 @@
-package com.kludwisz.fishcracker;
+package com.kludwisz.fishcracker.controls;
 
 import com.github.kwhat.jnativehook.GlobalScreen;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
