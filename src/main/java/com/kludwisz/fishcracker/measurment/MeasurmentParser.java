@@ -1,6 +1,6 @@
 package com.kludwisz.fishcracker.measurment;
 
-import com.kludwisz.fishcracker.math.Vec3i;
+import com.kludwisz.fishcracker.math.Vec3;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,10 +10,10 @@ import java.util.regex.Pattern;
 public class MeasurmentParser {
     private static final String TP_FORMAT = "/tp @p %f %f %f %f %f";
 
-    private Vec3i position;
+    private Vec3 position;
     private double angle;
 
-    public Vec3i getLastPosition() {
+    public Vec3 getLastPosition() {
         return position;
     }
 
