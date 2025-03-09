@@ -3,7 +3,6 @@ package com.kludwisz.fishcracker;
 import com.kludwisz.fishcracker.measurment.MeasurmentParser;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -37,10 +36,12 @@ public class FishCrackerApplication extends Application {
                     // copy clipboard contents to a string
                     Clipboard clipboard = Clipboard.getSystemClipboard();
                     String content = clipboard.getString();
-                    if (measurmentParser.parseAngleMeasurment(content)) {
-                        angleDisplay.setText(content);
+                    if (measurmentParser.parseAngleMeasurment(content)) { // /execute in minecraft:overworld run tp @s -553.92 64.05 -1034.76 9.99 -5.26
+                        System.out.println("correct measurment"); // /execute in minecraft:overworld run tp @s -553.92 64.05 -1034.76 2.62 8.41
+                        angleDisplay.setText(measurmentParser.getMeasurmentAsString());
                     }
                     else {
+                        System.out.println("failed measurment");
                         angleDisplay.setText("...");
                     }
                 })
