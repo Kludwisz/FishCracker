@@ -6,6 +6,14 @@ module com.kludwisz.fishcracker {
     requires java.logging;
     requires com.github.kwhat.jnativehook;
 
+    requires mc.core;
+    requires mc.seed;
+    requires mc.math;
+    requires mc.noise;
+    requires mc.biome;
+    requires mc.terrain;
+    requires mc.feature;
+
     opens com.kludwisz.fishcracker to javafx.fxml;
     exports com.kludwisz.fishcracker;
     exports com.kludwisz.fishcracker.controls;

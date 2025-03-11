@@ -1,0 +1,31 @@
+package com.kludwisz.fishcracker.cracker;
+
+import com.kludwisz.fishcracker.math.Line;
+import com.seedfinding.mccore.util.pos.CPos;
+
+import java.util.ArrayList;
+
+public class Cracker {
+    private final ArrayList<Line> measuredLines = new ArrayList<>();
+
+    public Cracker() {}
+
+    public void reset() {
+        measuredLines.clear();
+    }
+
+    public void addLineConstraint(Line line) {
+        measuredLines.add(line);
+    }
+
+    public ArrayList<CPos> getStructurePositions() {
+        // TODO implement the actual algo:
+        // 1. calculate the intersection points of all lines
+        // 2. find all 3-line intersection points (draw a circle around each, if 2 more intersections
+        //    fall within the circle then there's likely a structure there)
+        // 3. calculate which structures could generate in the resulting positions
+        // 4. order the structures by bit yield (descending)
+        // 5. calculate total bit yield
+        return new ArrayList<>();
+    }
+}

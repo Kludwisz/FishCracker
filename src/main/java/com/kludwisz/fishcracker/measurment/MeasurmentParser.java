@@ -11,7 +11,7 @@ public class MeasurmentParser {
     private static final String TP_FORMAT = "/execute in minecraft:overworld run tp @s %f %f %f %f %f";
 
     public Line parseMeasurment(String clipboardContent) {
-        // parse the clipboard content and display the angle
+        // parse the clipboard content to a usable datapoint
         try {
             List<Double> values = extractValues(clipboardContent);
             boolean wasMeasurmentSuccessful = values.size() == 5;
