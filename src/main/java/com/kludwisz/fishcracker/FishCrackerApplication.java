@@ -1,6 +1,7 @@
 package com.kludwisz.fishcracker;
 
 import com.kludwisz.fishcracker.controls.GlobalKeyListener;
+import com.kludwisz.fishcracker.math.Line;
 import com.kludwisz.fishcracker.measurment.MeasurmentParser;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -39,10 +40,11 @@ public class FishCrackerApplication extends Application {
                 v -> Platform.runLater(() -> {
                     Clipboard clipboard = Clipboard.getSystemClipboard();
                     String content = clipboard.getString();
+                    Line line = measurmentParser.parseMeasurment(content);
 
-                    if (measurmentParser.parseAngleMeasurment(content)) {
+                    if (line != null) {
                         System.out.println("correct measurment");
-                        angleDisplay.setText(measurmentParser.getMeasurmentAsString());
+                        angleDisplay.setText(line.toString());
                     }
                     else {
                         System.out.println("failed measurment");
