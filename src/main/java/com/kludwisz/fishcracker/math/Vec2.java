@@ -13,15 +13,19 @@ public record Vec2(double x, double z) {
         return new Vec2(x + other.x, z + other.z);
     }
 
-    public Vec2 subtract(Vec2 other) {
+    public Vec2 sub(Vec2 other) {
         return new Vec2(x - other.x, z - other.z);
     }
 
-    public Vec2 multiply(int scalar) {
+    public double dot(Vec2 other) {
+        return x * other.x + z * other.z;
+    }
+
+    public Vec2 mul(int scalar) {
         return new Vec2(x * scalar, z * scalar);
     }
 
-    public Vec2 divide(int scalar) {
+    public Vec2 div(int scalar) {
         return new Vec2(x / scalar, z / scalar);
     }
 

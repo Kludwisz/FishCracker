@@ -22,13 +22,22 @@ public class Line {
         double z1 = start.getZ();
         double x2 = other.getStart().getX();
         double z2 = other.getStart().getZ();
-        double m1 = Math.tan(angle);
-        double m2 = Math.tan(other.getAngle());
+        double tan1 = Math.tan(angle);
+        double tan2 = Math.tan(other.getAngle());
 
-        double x = (m1 * x1 - m2 * x2 + z2 - z1) / (m1 - m2);
-        double z = m1 * (x - x1) + z1;
+        double x = (z1 - z2 - tan1 * x1 + tan2 * x2) / (tan1 - tan2); // TODO verify this
+        double z = tan1 * (x - x1) + z1; // TODO verify this
 
-        return new Vec2(x, z);
+        // check if the intersection is on the "correct side" of both lines
+        Vec2 dir1 = new Vec2(Math.cos(angle), Math.sin(angle));
+        Vec2 dir2 = new Vec2(Math.cos(other.getAngle()), Math.sin(other.getAngle()));
+        Vec2 isec = new Vec2(x, z);
+
+        if (dir1.dot(isec.sub(start)) < 0 || dir2.dot(isec.sub(other.getStart())) < 0) {
+            return null;
+        }
+
+        return isec;
     }
 
     public String toString() {
