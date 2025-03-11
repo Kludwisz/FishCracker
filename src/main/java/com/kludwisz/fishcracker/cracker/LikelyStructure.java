@@ -14,7 +14,8 @@ public record LikelyStructure(Vec2 pos, int intersectionCount, Type type) {
             sumZ += intersection.getZ();
         }
         int n = intersections.size();
-        return new LikelyStructure(new Vec2(sumX / n, sumZ / n), n, Type.ANY);
+        Vec2 pos = new Vec2(sumX / n, sumZ / n);
+        return new LikelyStructure(pos, n, LikelyStructure.typeAtPos(pos));
     }
 
     private static Type typeAtPos(Vec2 pos) {

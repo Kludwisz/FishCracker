@@ -55,14 +55,8 @@ public class Cracker {
             }
         }
 
-        // 3. order the structures by bit yield (descending), then by probability of being correct (descending)
-        likelyStructures.sort((a, b) -> {
-            if (a.type().isAny() && !b.type().isAny())
-                return 1;
-            if (!a.type().isAny() && b.type().isAny())
-                return -1;
-            return Integer.compare(b.intersectionCount(), a.intersectionCount());
-        });
+        // 3. order the structures by bit yield (descending)
+        likelyStructures.sort((a, b) -> Double.compare(b.type().getBits(), a.type().getBits()));
 
         // 4. calculate total bit yield
         return new ArrayList<>();
