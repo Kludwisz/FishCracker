@@ -35,7 +35,7 @@ public class Cracker {
         }
 
         // 2. find all 3-line intersection points (draw a circle around each, if 2 more intersections
-        //    fall within the circle then there's likely a structure there)
+        //    fall within the circle then there's likely a structure there), create likely structures
         ArrayList<LikelyStructure> likelyStructures = new ArrayList<>();
 
         final double maxDistanceSq = 10.0 * 10.0;
@@ -55,9 +55,16 @@ public class Cracker {
             }
         }
 
-        // 3. calculate which structures could generate in the resulting positions
-        // 4. order the structures by bit yield (descending)
-        // 5. calculate total bit yield
+        // 3. order the structures by bit yield (descending), then by probability of being correct (descending)
+        likelyStructures.sort((a, b) -> {
+            if (a.type().isAny() && !b.type().isAny())
+                return 1;
+            if (!a.type().isAny() && b.type().isAny())
+                return -1;
+            return Integer.compare(b.intersectionCount(), a.intersectionCount());
+        });
+
+        // 4. calculate total bit yield
         return new ArrayList<>();
     }
 }
