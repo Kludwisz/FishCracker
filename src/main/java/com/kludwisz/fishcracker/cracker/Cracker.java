@@ -36,6 +36,24 @@ public class Cracker {
 
         // 2. find all 3-line intersection points (draw a circle around each, if 2 more intersections
         //    fall within the circle then there's likely a structure there)
+        ArrayList<LikelyStructure> likelyStructures = new ArrayList<>();
+
+        final double maxDistanceSq = 10.0 * 10.0;
+        for (Vec2 intersection : intersections) {
+            ArrayList<Vec2> closeIntersections = new ArrayList<>();
+
+            for (Vec2 otherIntersection : intersections) {
+                if (intersection == otherIntersection)
+                    continue;
+
+                if (intersection.distanceToSq(otherIntersection) < maxDistanceSq) {
+                    closeIntersections.add(otherIntersection);
+                }
+            }
+            if (closeIntersections.size() >= 3) {
+                likelyStructures.add(LikelyStructure.fromPoints(closeIntersections));
+            }
+        }
 
         // 3. calculate which structures could generate in the resulting positions
         // 4. order the structures by bit yield (descending)

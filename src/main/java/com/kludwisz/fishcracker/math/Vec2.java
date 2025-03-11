@@ -21,12 +21,10 @@ public record Vec2(double x, double z) {
         return x * other.x + z * other.z;
     }
 
-    public Vec2 mul(int scalar) {
-        return new Vec2(x * scalar, z * scalar);
-    }
-
-    public Vec2 div(int scalar) {
-        return new Vec2(x / scalar, z / scalar);
+    public double distanceToSq(Vec2 other) {
+        final double dx = x - other.x;
+        final double dz = z - other.z;
+        return dx * dx + dz * dz;
     }
 
     @Override
