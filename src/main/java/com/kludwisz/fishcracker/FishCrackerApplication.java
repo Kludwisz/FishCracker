@@ -1,6 +1,7 @@
 package com.kludwisz.fishcracker;
 
 import com.kludwisz.fishcracker.controls.GlobalKeyListener;
+import com.kludwisz.fishcracker.cracker.Cracker;
 import com.kludwisz.fishcracker.math.Line;
 import com.kludwisz.fishcracker.measurment.MeasurmentParser;
 import javafx.application.Application;
@@ -16,6 +17,9 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class FishCrackerApplication extends Application {
+    private FishCrackerController controller;
+
+    private final Cracker cracker = new Cracker();
     private final MeasurmentParser measurmentParser = new MeasurmentParser();
 
     @Override
@@ -23,6 +27,8 @@ public class FishCrackerApplication extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(FishCrackerApplication.class.getResource("fish-cracker-view.fxml"));
         AnchorPane rootPane = fxmlLoader.load();
         Label angleDisplay = (Label) rootPane.lookup("#angleDisplay");
+        this.controller = fxmlLoader.getController();
+
         Scene scene = new Scene(rootPane, 480, 300);
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("dark-mode.css")).toExternalForm());
 
@@ -41,6 +47,10 @@ public class FishCrackerApplication extends Application {
                     Clipboard clipboard = Clipboard.getSystemClipboard();
                     String content = clipboard.getString();
                     Line line = measurmentParser.parseMeasurment(content);
+                    cracker.addLineConstraint(line);
+                    Cracker.StructureModel model = cracker.getStructureModel();
+                    if (!model.structures().isEmpty())
+                        controller.displayText(model.structures().getFirst().toString());
 
                     if (line != null) {
                         System.out.println("correct measurment");

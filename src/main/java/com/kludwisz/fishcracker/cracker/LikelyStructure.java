@@ -5,7 +5,11 @@ import com.seedfinding.mccore.util.pos.CPos;
 
 import java.util.List;
 
-public record LikelyStructure(Vec2 pos, int intersectionCount, Type type) {
+public record LikelyStructure(CPos pos, int intersectionCount, Type type) {
+    public String toString() {
+        return String.format("LikelyStructure{pos=%s, intersectionCount=%d, type=%s}", pos, intersectionCount, type.name());
+    }
+
     public static LikelyStructure fromPoints(List<Vec2> intersections) {
         // calculate center as simple average
         double sumX = 0.0;
@@ -20,7 +24,7 @@ public record LikelyStructure(Vec2 pos, int intersectionCount, Type type) {
         if (bestChunk == null)
             return null;
 
-        return new LikelyStructure(pos, n, LikelyStructure.typeAtPos(bestChunk));
+        return new LikelyStructure(bestChunk, n, LikelyStructure.typeAtPos(bestChunk));
     }
 
     private static final double MIN_DISTANCE_DIFF = 4.0 * 4.0; // TODO tuning
@@ -82,7 +86,7 @@ public record LikelyStructure(Vec2 pos, int intersectionCount, Type type) {
         SHIPWRECK(8.644),
         OCEAN_RUIN(7.170);
 
-        private double bits;
+        private final double bits;
 
         Type(double bits) {
             this.bits = bits;

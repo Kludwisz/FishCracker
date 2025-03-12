@@ -34,6 +34,7 @@
          <children>
             <Label text="Measure dolhpin angle with F3+C:" />
             <Label fx:id="angleDisplay" text="..." />
+            <Label fx:id="resultDisplay" alignment="CENTER" prefHeight="74.0" prefWidth="222.0" text="..." textAlignment="CENTER" wrapText="true" />
          </children>
       </VBox>
    </children>
