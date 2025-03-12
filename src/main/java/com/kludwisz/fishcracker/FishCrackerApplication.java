@@ -66,6 +66,7 @@ public class FishCrackerApplication extends Application {
     }
 
     public static void main(String[] args) {
+        Tests.triangulationTest();
         launch();
     }
 }
