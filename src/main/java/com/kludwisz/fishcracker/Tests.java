@@ -3,7 +3,12 @@ package com.kludwisz.fishcracker;
 import com.kludwisz.fishcracker.math.Line;
 import com.kludwisz.fishcracker.measurment.MeasurmentParser;
 
+@SuppressWarnings("unused")
 public class Tests {
+    public static void run() {
+        triangulationTest();
+    }
+
     public static void triangulationTest() {
         MeasurmentParser parser = new MeasurmentParser();
         Line ln1 = parser.parseMeasurment("/execute in minecraft:overworld run tp @s 1472.36 85.36 195.53 50.93 10.65");

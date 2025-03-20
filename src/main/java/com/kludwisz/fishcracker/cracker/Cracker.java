@@ -5,6 +5,7 @@ import com.kludwisz.fishcracker.math.Vec2;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 public class Cracker {
     private final ArrayList<Line> measuredLines = new ArrayList<>();
@@ -80,6 +81,24 @@ public class Cracker {
         }
 
         return new StructureModel(likelyStructures, totalBits);
+    }
+
+    public List<Long> getStructreSeeds(StructureModel model) {
+        // the faster part of the process, no need for multithreading here
+        List<Integer> shortSeeds = IntStream.range(0, 1 << 19).boxed().parallel()
+                .filter(seed -> {
+                    ShortStateRand rand = new ShortStateRand();
+                    for (LikelyStructure structure : model.structures()) {
+                        if (!structure.lift(seed, rand))
+                            return false;
+                    }
+                    return true;
+                }).toList();
+
+        // now we need to bruteforce the remaining 48-19 = 29 bits
+        // (potentially several times, there can sometimes be multiple short seeds)
+
+        return null;
     }
 
     public record StructureModel(List<LikelyStructure> structures, double bits) {}

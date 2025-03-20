@@ -2,12 +2,32 @@ package com.kludwisz.fishcracker.cracker;
 
 import com.kludwisz.fishcracker.math.Vec2;
 import com.seedfinding.mccore.util.pos.CPos;
+import com.seedfinding.mccore.util.pos.RPos;
 
 import java.util.List;
 
 public record LikelyStructure(CPos pos, int intersectionCount, Type type) {
     public String toString() {
         return String.format("LikelyStructure{pos=%s, intersectionCount=%d, type=%s}", pos, intersectionCount, type.name());
+    }
+
+    public boolean lift(int seed, ShortStateRand rand) {
+        boolean anythingOK = false;
+
+        if (this.canBe(Type.SHIPWRECK)) {
+            RPos regionPos = this.pos.toRegionPos(24);
+            // TODO get shipwreck region coords
+        }
+        if (this.canBe(Type.OCEAN_RUIN)) {
+            RPos regionPos = this.pos.toRegionPos(20);
+            // TODO get ruin region coords
+        }
+
+        return anythingOK;
+    }
+
+    public boolean canBe(Type type) {
+        return type == Type.ANY || type == this.type;
     }
 
     public static LikelyStructure fromPoints(List<Vec2> intersections) {
