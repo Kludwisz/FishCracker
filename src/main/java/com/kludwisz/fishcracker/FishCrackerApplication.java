@@ -9,6 +9,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.input.Clipboard;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -24,10 +25,14 @@ public class FishCrackerApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+        // load icon resource
+        stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("app_icon.png"))));
+
         FXMLLoader fxmlLoader = new FXMLLoader(FishCrackerApplication.class.getResource("fish-cracker-view.fxml"));
         AnchorPane rootPane = fxmlLoader.load();
         Label angleDisplay = (Label) rootPane.lookup("#angleDisplay");
         this.controller = fxmlLoader.getController();
+        this.controller.bindCrackerInstance(cracker);
 
         Scene scene = new Scene(rootPane, 480, 300);
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("dark-mode.css")).toExternalForm());
