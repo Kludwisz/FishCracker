@@ -25,9 +25,10 @@ public class Cracker {
     public StructureModel getStructureModel() {
         // 1. calculate the intersection points of all lines
         ArrayList<Vec2> intersections = new ArrayList<>();
-        for (Line line1 : measuredLines) {
-            for (Line line2 : measuredLines) {
-                if (line1 == line2) continue; // comparing refs should be enough here
+        for (int i = 0; i < measuredLines.size(); i++) {
+            Line line1 = measuredLines.get(i);
+            for (int j = i + 1; j < measuredLines.size(); j++) {
+                Line line2 = measuredLines.get(j);
                 Vec2 intersection = line1.intersection(line2);
                 if (intersection != null) {
                     intersections.add(intersection);
@@ -68,7 +69,7 @@ public class Cracker {
 
                 likelyStructures.add(newStructure);
                 for (Vec2 closeIntersection : closeIntersections) {
-                    usedPoints[intersections.indexOf(closeIntersection)] = true;
+                    usedPoints[sortedIntersections.indexOf(closeIntersection)] = true;
                 }
             }
         }

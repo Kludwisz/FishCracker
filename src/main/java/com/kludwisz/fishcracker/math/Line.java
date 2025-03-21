@@ -50,4 +50,12 @@ public class Line {
                 "[x=%.2f z=%.2f theta=%.2f]", getStart().getX(), getStart().getZ(), getAngle()
         );
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Line)) return false;
+
+        Line other = (Line) obj;
+        return start.equals(other.getStart()) && angle == other.getAngle();
+    }
 }

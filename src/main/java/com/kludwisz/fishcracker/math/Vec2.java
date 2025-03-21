@@ -43,5 +43,4 @@ public record Vec2(double x, double z) {
         Vec2 other = (Vec2) obj;
         return x == other.x && z == other.z;
     }
-
 }
