@@ -43,23 +43,26 @@ public class FishCrackerApplication extends Application {
     private void setupF3CListener(Label angleDisplay) {
         GlobalKeyListener f3cListener = new GlobalKeyListener();
         f3cListener.setF3CAction(
-                v -> Platform.runLater(() -> {
-                    Clipboard clipboard = Clipboard.getSystemClipboard();
-                    String content = clipboard.getString();
-                    Line line = measurmentParser.parseMeasurment(content);
-                    cracker.addLineConstraint(line);
-                    Cracker.StructureModel model = cracker.getStructureModel();
-                    controller.displayModel(model);
+                v -> {
+                    // wait for clipboard content update (very, very bad coding practice)
+                    try { Thread.sleep(10); } catch (InterruptedException ignored) {}
+                    Platform.runLater(() -> {
+                        Clipboard clipboard = Clipboard.getSystemClipboard();
+                        String content = clipboard.getString();
+                        Line line = measurmentParser.parseMeasurment(content);
+                        cracker.addLineConstraint(line);
+                        Cracker.StructureModel model = cracker.getStructureModel();
+                        controller.displayModel(model);
 
-                    if (line != null) {
-                        System.out.println("correct measurment");
-                        angleDisplay.setText(line.toString());
-                    }
-                    else {
-                        System.out.println("failed measurment");
-                        angleDisplay.setText("...");
-                    }
-                })
+                        if (line != null) {
+                            System.out.println("correct measurment");
+                            angleDisplay.setText(line.toString());
+                        } else {
+                            System.out.println("failed measurment");
+                            angleDisplay.setText("...");
+                        }
+                    });
+                }
         );
         GlobalKeyListener.register(f3cListener);
     }
