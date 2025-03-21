@@ -2,6 +2,7 @@ package com.kludwisz.fishcracker.cracker;
 
 import com.kludwisz.fishcracker.math.Line;
 import com.kludwisz.fishcracker.math.Vec2;
+import com.kludwisz.fishcracker.measurment.MeasurmentParser;
 import com.seedfinding.mccore.rand.ChunkRand;
 
 import java.util.ArrayList;
@@ -12,14 +13,28 @@ import java.util.stream.LongStream;
 public class Cracker {
     private final ArrayList<Line> measuredLines = new ArrayList<>();
 
-    public Cracker() {}
+    public Cracker() {
+//        // TODO remove, test data
+//        MeasurmentParser measurmentParser = new MeasurmentParser();
+//        String[] commands = {
+//                "/execute in minecraft:overworld run tp @s -845.48 66.24 265.35 234.75 8.22",
+//                "/execute in minecraft:overworld run tp @s -846.15 76.36 225.99 337.78 14.04",
+//                "/execute in minecraft:overworld run tp @s -860.75 76.36 235.74 306.35 10.06",
+//                "/execute in minecraft:overworld run tp @s -810.29 76.36 225.01 243.29 14.04"
+//        };
+//        for (String command : commands) {
+//            addLineConstraint(measurmentParser.parseMeasurment(command));
+//        }
+//        getStructureModel();
+    }
 
     public void reset() {
         measuredLines.clear();
     }
 
     public void addLineConstraint(Line line) {
-        measuredLines.add(line);
+        if (line != null)
+            measuredLines.add(line);
     }
 
     public StructureModel getStructureModel() {
@@ -47,6 +62,9 @@ public class Cracker {
             (int) intersections.stream().filter(i -> i.distanceToSq(b) < maxSq * maxSq).count(),
             (int) intersections.stream().filter(i -> i.distanceToSq(a) < maxSq * maxSq).count()
         ));
+        for (Vec2 intersection : sortedIntersections) {
+            System.out.println(intersection + " " + intersections.stream().filter(i -> i.distanceToSq(intersection) < maxSq * maxSq).count());
+        }
 
         boolean[] usedPoints = new boolean[intersections.size()];
         for (Vec2 intersection : sortedIntersections) {
@@ -62,7 +80,8 @@ public class Cracker {
                     closeIntersections.add(otherIntersection);
                 }
             }
-            if (closeIntersections.size() >= 3) {
+            if (closeIntersections.size() >= 2) {
+                closeIntersections.add(intersection);
                 LikelyStructure newStructure = LikelyStructure.fromPoints(closeIntersections);
                 if (newStructure == null)
                     continue;
