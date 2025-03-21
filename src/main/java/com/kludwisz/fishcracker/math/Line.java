@@ -29,7 +29,20 @@ public class Line {
         double x = (m1 * x1 - m2 * x2 + z2 - z1) / (m1 - m2);
         double z = m1 * (x - x1) + z1;
 
-        return new Vec2(x, z);
+        // check if the intersection is on the correct side of both lines
+        Vec2 dir1 = new Vec2(Math.cos(angle), Math.sin(angle));
+        Vec2 dir2 = new Vec2(Math.cos(other.getAngle()), Math.sin(other.getAngle()));
+        Vec2 inter = new Vec2(x, z);
+        if (dir1.dot(inter.sub(start)) < 0 || dir2.dot(inter.sub(other.getStart())) < 0) {
+            return null;
+        }
+
+        // check if the intersection is not too far from the start of the lines
+        if (inter.distanceToSq(start) > 200 * 200 || inter.distanceToSq(other.getStart()) > 200 * 200) {
+            return null;
+        }
+
+        return inter;
     }
 
     public String toString() {

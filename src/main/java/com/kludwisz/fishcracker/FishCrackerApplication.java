@@ -49,8 +49,7 @@ public class FishCrackerApplication extends Application {
                     Line line = measurmentParser.parseMeasurment(content);
                     cracker.addLineConstraint(line);
                     Cracker.StructureModel model = cracker.getStructureModel();
-                    if (!model.structures().isEmpty())
-                        controller.displayText(model.structures().getFirst().toString());
+                    controller.displayModel(model);
 
                     if (line != null) {
                         System.out.println("correct measurment");

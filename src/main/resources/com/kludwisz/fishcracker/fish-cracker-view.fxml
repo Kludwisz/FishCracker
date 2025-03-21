@@ -27,7 +27,7 @@
       <HBox alignment="CENTER" layoutX="200.0" layoutY="357.0" prefHeight="40.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
             <Label fx:id="collectedInfoLabel" text="collected information: " />
-            <ProgressBar prefWidth="200.0" progress="0.0" />
+            <ProgressBar fx:id="collectedInfoBar" prefWidth="200.0" progress="0.0" />
          </children>
       </HBox>
       <VBox alignment="TOP_CENTER" layoutX="200.0" layoutY="125.0" prefHeight="294.0" prefWidth="600.0" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
