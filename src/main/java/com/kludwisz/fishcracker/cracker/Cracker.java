@@ -2,10 +2,12 @@ package com.kludwisz.fishcracker.cracker;
 
 import com.kludwisz.fishcracker.math.Line;
 import com.kludwisz.fishcracker.math.Vec2;
+import com.seedfinding.mccore.rand.ChunkRand;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 
 public class Cracker {
     private final ArrayList<Line> measuredLines = new ArrayList<>();
@@ -98,7 +100,28 @@ public class Cracker {
         // now we need to bruteforce the remaining 48-19 = 29 bits
         // (potentially several times, there can sometimes be multiple short seeds)
 
-        return null;
+        // safeguard, we don't want the code to run forever
+        if (shortSeeds.size() >= 8)
+            return null;
+
+        ArrayList<Long> structureSeeds = new ArrayList<>();
+        for (int shortSeed : shortSeeds) {
+            structureSeeds.addAll(
+                LongStream.range(0L, 1L << 29).parallel()
+                        .map(upper -> (upper << 19) | shortSeed)
+                        .filter(structureSeed -> {
+                            ChunkRand rand = new ChunkRand();
+                            for (LikelyStructure structure : model.structures()) {
+                                if (!structure.checkExactPos(structureSeed, rand))
+                                    return false;
+                            }
+                            return true;
+                        })
+                        .collect(ArrayList::new, ArrayList::add, ArrayList::addAll)
+            );
+        }
+
+        return structureSeeds;
     }
 
     public record StructureModel(List<LikelyStructure> structures, double bits) {}

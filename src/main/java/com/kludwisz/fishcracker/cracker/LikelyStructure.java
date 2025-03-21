@@ -1,8 +1,10 @@
 package com.kludwisz.fishcracker.cracker;
 
 import com.kludwisz.fishcracker.math.Vec2;
+import com.seedfinding.mccore.rand.ChunkRand;
 import com.seedfinding.mccore.util.pos.CPos;
 import com.seedfinding.mccore.util.pos.RPos;
+import com.seedfinding.mccore.version.MCVersion;
 
 import java.util.List;
 
@@ -16,11 +18,40 @@ public record LikelyStructure(CPos pos, int intersectionCount, Type type) {
 
         if (this.canBe(Type.SHIPWRECK)) {
             RPos regionPos = this.pos.toRegionPos(24);
-            // TODO get shipwreck region coords
+            rand.setRegionSeed(seed, regionPos.getX(), regionPos.getZ(), 165745295);
+
+            CPos posInRegion = this.pos.subtract(regionPos.toChunkPos());
+            int lx = posInRegion.getX() & 3;
+            int lz = posInRegion.getZ() & 3;
+            anythingOK |= rand.nextInt(2) == lx && rand.nextInt(2) == lz;
         }
         if (this.canBe(Type.OCEAN_RUIN)) {
             RPos regionPos = this.pos.toRegionPos(20);
-            // TODO get ruin region coords
+            rand.setRegionSeed(seed, regionPos.getX(), regionPos.getZ(), 14357621);
+
+            CPos posInRegion = this.pos.subtract(regionPos.toChunkPos());
+            int lx = posInRegion.getX() & 3;
+            int lz = posInRegion.getZ() & 3;
+            anythingOK |= rand.nextInt(2) == lx && rand.nextInt(2) == lz;
+        }
+
+        return anythingOK;
+    }
+
+    public boolean checkExactPos(long seed, ChunkRand rand) {
+        boolean anythingOK = false;
+
+        if (this.canBe(Type.SHIPWRECK)) {
+            RPos regionPos = this.pos.toRegionPos(24);
+            CPos posInRegion = this.pos.subtract(regionPos.toChunkPos());
+            rand.setRegionSeed(seed, regionPos.getX(), regionPos.getZ(), 165745295, MCVersion.v1_16_1);
+            anythingOK |= new CPos(rand.nextInt(24), rand.nextInt(24)).equals(posInRegion);
+        }
+        if (this.canBe(Type.OCEAN_RUIN)) {
+            RPos regionPos = this.pos.toRegionPos(20);
+            CPos posInRegion = this.pos.subtract(regionPos.toChunkPos());
+            rand.setRegionSeed(seed, regionPos.getX(), regionPos.getZ(), 14357621, MCVersion.v1_16_1);
+            anythingOK |= new CPos(rand.nextInt(20), rand.nextInt(20)).equals(posInRegion);
         }
 
         return anythingOK;
