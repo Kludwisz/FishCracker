@@ -10,7 +10,7 @@ import java.util.List;
 
 public record LikelyStructure(CPos pos, int intersectionCount, Type type) {
     public String toString() {
-        return String.format("Likely Structure (%s) at %s, %d intersections", type.name(), pos, intersectionCount);
+        return String.format("Likely Structure (%s) at (%d, %d), %d intersections", type.name(), pos.getX(), pos.getZ(), intersectionCount);
     }
 
     public boolean lift(int seed, ShortStateRand rand) {

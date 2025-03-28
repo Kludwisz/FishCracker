@@ -43,6 +43,13 @@ public class FishCrackerApplication extends Application {
 
         this.setupF3CListener(angleDisplay);
         rootPane.requestFocus(); // for handling key events
+
+        // set custom app exit behavior
+        stage.setOnCloseRequest(e -> {
+            GlobalKeyListener.stop();
+            Platform.exit();
+            System.exit(0);
+        });
     }
 
     private void setupF3CListener(Label angleDisplay) {

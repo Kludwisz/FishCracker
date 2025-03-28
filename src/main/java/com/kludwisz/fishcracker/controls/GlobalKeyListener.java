@@ -62,4 +62,14 @@ public class GlobalKeyListener implements NativeKeyListener {
             e.printStackTrace();
         }
     }
+
+    public static void stop() {
+        try {
+            GlobalScreen.unregisterNativeHook();
+        }
+        catch (Exception e) {
+            System.err.println("Could not stop global key listener!");
+            e.printStackTrace();
+        }
+    }
 }
