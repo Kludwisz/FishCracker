@@ -23,8 +23,8 @@ public class ShortStateRand {
         this.seed = (this.seed * MULTIPLIER + ADDEND) & MASK;
     }
 
-    public int nextInt(int bits) {
+    public int nextIntRemainder() {
         this.nextSeed();
-        return (this.seed >>> (19 - bits)) & ((1 << bits) - 1);
+        return (this.seed >>> 17) & 3;
     }
 }

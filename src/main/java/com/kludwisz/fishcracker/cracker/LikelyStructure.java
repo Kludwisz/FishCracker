@@ -18,21 +18,23 @@ public record LikelyStructure(CPos pos, int intersectionCount, Type type) {
 
         if (this.canBe(Type.SHIPWRECK)) {
             RPos regionPos = this.pos.toRegionPos(24);
+            CPos posInRegion = this.pos.subtract(regionPos.toChunkPos());
             rand.setRegionSeed(seed, regionPos.getX(), regionPos.getZ(), 165745295);
 
-            CPos posInRegion = this.pos.subtract(regionPos.toChunkPos());
             int lx = posInRegion.getX() & 3;
             int lz = posInRegion.getZ() & 3;
-            anythingOK |= rand.nextInt(2) == lx && rand.nextInt(2) == lz;
+            anythingOK |= rand.nextIntRemainder() == lx && rand.nextIntRemainder() == lz;
+            if (anythingOK)
+                System.out.println("Something was ok");
         }
         if (this.canBe(Type.OCEAN_RUIN)) {
             RPos regionPos = this.pos.toRegionPos(20);
+            CPos posInRegion = this.pos.subtract(regionPos.toChunkPos());
             rand.setRegionSeed(seed, regionPos.getX(), regionPos.getZ(), 14357621);
 
-            CPos posInRegion = this.pos.subtract(regionPos.toChunkPos());
             int lx = posInRegion.getX() & 3;
             int lz = posInRegion.getZ() & 3;
-            anythingOK |= rand.nextInt(2) == lx && rand.nextInt(2) == lz;
+            anythingOK |= rand.nextIntRemainder() == lx && rand.nextIntRemainder() == lz;
         }
 
         return anythingOK;
@@ -58,7 +60,7 @@ public record LikelyStructure(CPos pos, int intersectionCount, Type type) {
     }
 
     public boolean canBe(Type type) {
-        return type == Type.ANY || type == this.type;
+        return this.type == Type.ANY || this.type == type;
     }
 
     public static LikelyStructure fromPoints(List<Vec2> intersections) {
@@ -78,7 +80,7 @@ public record LikelyStructure(CPos pos, int intersectionCount, Type type) {
         return new LikelyStructure(bestChunk, n, LikelyStructure.typeAtPos(bestChunk));
     }
 
-    private static final double MIN_DISTANCE_DIFF = 4.0 * 4.0; // TODO tuning
+    private static final double MIN_DISTANCE_DIFF = 4.0 * 4.0;
     private static CPos getBestChunkPos(Vec2 pos) {
         // find the chunk such that its origin (0,0) is closest to the pos.
         // only return the chunk if other chunks are significantly further away;
@@ -93,6 +95,8 @@ public record LikelyStructure(CPos pos, int intersectionCount, Type type) {
 
         for (int dcx = -1; dcx <= 1; dcx++) {
             for (int dcz = -1; dcz <= 1; dcz++) {
+                if (dcx == 0 && dcz == 0)
+                    continue; // already checked that one
                 CPos chunk = new CPos(chunkX + dcx, chunkZ + dcz);
                 double dist = new Vec2(chunk.getX() * 16.0, chunk.getZ() * 16.0).distanceToSq(pos);
 
@@ -107,6 +111,7 @@ public record LikelyStructure(CPos pos, int intersectionCount, Type type) {
             }
         }
 
+        //System.err.println("best chunk: " + currentBest + " dist: " + Math.sqrt(currentDist));
         return goodDifference ? currentBest : null;
     }
 

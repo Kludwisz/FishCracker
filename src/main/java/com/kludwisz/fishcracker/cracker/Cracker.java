@@ -26,9 +26,9 @@ public class Cracker {
     }
 
     public void addLineConstraint(Line line) {
+        currentModel = null;
         if (line != null) {
             measuredLines.add(line);
-            currentModel = null;
         }
     }
 
@@ -85,8 +85,10 @@ public class Cracker {
                 continue;
 
             LikelyStructure newStructure = LikelyStructure.fromPoints(closeIntersections);
-            if (newStructure == null)
+            if (newStructure == null) {
                 continue;
+            }
+
 
             likelyStructures.add(newStructure);
             for (Vec2 closeIntersection : closeIntersections) {
@@ -110,8 +112,8 @@ public class Cracker {
     public List<Long> getStructreSeeds() throws CrackingFailedException {
         if (currentModel == null)
             this.getStructureModel();
-        if (currentModel.bits() < 32.0D)
-            throw new CrackingFailedException("Not enough information to crack the seed");
+        //if (currentModel.bits() < 32.0D)
+        //    throw new CrackingFailedException("Not enough information to crack the seed");
 
         // the faster part of the process, no need for multithreading here
         List<Integer> shortSeeds = IntStream.range(0, 1 << 19).boxed().parallel()
@@ -123,6 +125,7 @@ public class Cracker {
                     }
                     return true;
                 }).toList();
+        System.err.println("short seeds: " + shortSeeds.size());
 
         // now we need to bruteforce the remaining 48-19 = 29 bits
         // (potentially several times, there can sometimes be multiple short seeds)
