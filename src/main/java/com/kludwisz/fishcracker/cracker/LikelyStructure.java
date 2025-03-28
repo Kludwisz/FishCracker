@@ -24,8 +24,6 @@ public record LikelyStructure(CPos pos, int intersectionCount, Type type) {
             int lx = posInRegion.getX() & 3;
             int lz = posInRegion.getZ() & 3;
             anythingOK |= rand.nextIntRemainder() == lx && rand.nextIntRemainder() == lz;
-            if (anythingOK)
-                System.out.println("Something was ok");
         }
         if (this.canBe(Type.OCEAN_RUIN)) {
             RPos regionPos = this.pos.toRegionPos(20);
@@ -47,13 +45,13 @@ public record LikelyStructure(CPos pos, int intersectionCount, Type type) {
             RPos regionPos = this.pos.toRegionPos(24);
             CPos posInRegion = this.pos.subtract(regionPos.toChunkPos());
             rand.setRegionSeed(seed, regionPos.getX(), regionPos.getZ(), 165745295, MCVersion.v1_16_1);
-            anythingOK |= new CPos(rand.nextInt(24), rand.nextInt(24)).equals(posInRegion);
+            anythingOK |= new CPos(rand.nextInt(20), rand.nextInt(20)).equals(posInRegion);
         }
         if (this.canBe(Type.OCEAN_RUIN)) {
             RPos regionPos = this.pos.toRegionPos(20);
             CPos posInRegion = this.pos.subtract(regionPos.toChunkPos());
             rand.setRegionSeed(seed, regionPos.getX(), regionPos.getZ(), 14357621, MCVersion.v1_16_1);
-            anythingOK |= new CPos(rand.nextInt(20), rand.nextInt(20)).equals(posInRegion);
+            anythingOK |= new CPos(rand.nextInt(12), rand.nextInt(12)).equals(posInRegion);
         }
 
         return anythingOK;
