@@ -1,13 +1,22 @@
 package com.kludwisz.fishcracker;
 
 import com.kludwisz.fishcracker.cracker.Cracker;
+import com.kludwisz.fishcracker.cracker.CrackingFailedException;
 import com.kludwisz.fishcracker.cracker.LikelyStructure;
+import com.seedfinding.mccore.util.math.NextLongReverser;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.PopupWindow;
 
+import java.awt.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.util.List;
 import java.util.Optional;
 
 public class FishCrackerController {
@@ -35,6 +44,54 @@ public class FishCrackerController {
         }
     }
 
+    @FXML private void runCrackerAction() {
+        try {
+            List<Long> worldseeds = cracker.getStructreSeeds().stream()
+                    .flatMap(seed -> NextLongReverser.getNextLongEquivalents(seed).stream())
+                    .filter(seed -> cracker.testFullWorldSeed(seed))
+                    .toList();
+            if (worldseeds.isEmpty())
+                throw new CrackingFailedException("No valid world seeds found");
+
+            StringBuilder result = new StringBuilder();
+            for (long seed : worldseeds)
+                result.append(seed).append("\n");
+            this.copyToClipboard(result.toString());
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Success!");
+            alert.setHeaderText("Found " + worldseeds.size() + " valid world seeds:");
+            alert.setContentText("The world seeds have been copied to your clipboard. Click OK to save them to a file.");
+            Optional<ButtonType> saveResult = alert.showAndWait();
+
+            if (saveResult.isPresent() && saveResult.get() == ButtonType.OK) {
+                // Save results to user-chosen file
+                FileChooser fileChooser = new FileChooser();
+                fileChooser.setTitle("Save world seeds to file");
+                File savefile = fileChooser.showSaveDialog(structureContainer.getScene().getWindow());
+
+                try (FileWriter fout = new FileWriter(savefile)) {
+                    fout.write(result.toString());
+                }
+                catch(Exception e) {
+                    Alert saveError = new Alert(Alert.AlertType.ERROR);
+                    saveError.setTitle("Error saving world seeds");
+                    saveError.setHeaderText("An error occurred while saving the world seeds to file: " + e.getMessage());
+                    saveError.showAndWait();
+                }
+            }
+        }
+        catch (CrackingFailedException ex) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Seed cracking error");
+            alert.setHeaderText("Something went wrong: " + ex.getMessage());
+            alert.showAndWait();
+        }
+    }
+
+    private void copyToClipboard(String string) {
+        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new java.awt.datatransfer.StringSelection(string), null);
+    }
 
     public void displayText(String result) {
         resultDisplay.setText(result);

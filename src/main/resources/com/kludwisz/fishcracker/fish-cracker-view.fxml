@@ -11,6 +11,7 @@
               <menus>
                 <Menu mnemonicParsing="false" text="Actions">
                   <items>
+                    <MenuItem mnemonicParsing="false" onAction="#runCrackerAction" text="Run Cracker" />
                     <MenuItem mnemonicParsing="false" onAction="#resetCrackerAction" text="Reset Cracker" />
                   </items>
                 </Menu>
