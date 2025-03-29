@@ -7,7 +7,7 @@ plugins {
 }
 
 group 'com.kludwisz'
-version '1.0-SNAPSHOT'
+version '1.0'
 
 repositories {
     mavenCentral()
@@ -18,8 +18,10 @@ ext {
     junitVersion = '5.10.0'
 }
 
-sourceCompatibility = '21'
-targetCompatibility = '21'
+java {
+    sourceCompatibility = '17'
+    targetCompatibility = '17'
+}
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
@@ -27,7 +29,7 @@ tasks.withType(JavaCompile) {
 
 application {
     mainModule = 'com.kludwisz.fishcracker'
-    mainClass = 'com.kludwisz.fishcracker.FishCrackerApplication'
+    mainClass = 'com.kludwisz.fishcracker.Launcher'
 }
 
 javafx {
@@ -45,8 +47,6 @@ dependencies {
     implementation('com.seedfinding:mc_noise:1.171.1') { transitive = false }
 
     implementation('com.seedfinding:mc_biome:1.171.1') { transitive = false }
-    implementation('com.seedfinding:mc_terrain:1.171.1') { transitive = false }
-    implementation('com.seedfinding:mc_reversal:1.171.1') { transitive = false }
     implementation('com.seedfinding:mc_feature:1.171.9') { transitive = false }
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
@@ -62,7 +62,7 @@ jlink {
     imageZip = project.file("${buildDir}/distributions/app-${javafx.platform.classifier}.zip")
     options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
     launcher {
-        name = 'app'
+        name = 'FishCracker'
     }
 }
 

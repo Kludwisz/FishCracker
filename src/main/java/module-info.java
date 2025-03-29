@@ -11,7 +11,6 @@ module com.kludwisz.fishcracker {
     requires mc.math;
     requires mc.noise;
     requires mc.biome;
-    requires mc.terrain;
     requires mc.feature;
 
     opens com.kludwisz.fishcracker to javafx.fxml;

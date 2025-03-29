@@ -78,9 +78,4 @@ public class FishCrackerApplication extends Application {
         );
         GlobalKeyListener.register(f3cListener);
     }
-
-    public static void main(String[] args) {
-        //Tests.run();
-        launch();
-    }
 }
