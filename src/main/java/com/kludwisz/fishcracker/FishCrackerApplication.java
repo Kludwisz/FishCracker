@@ -1,7 +1,5 @@
 package com.kludwisz.fishcracker;
 
-import com.kludwisz.fishcracker.cracker.Cracker;
-import com.kludwisz.fishcracker.measurment.MeasurmentParser;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -14,11 +12,6 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class FishCrackerApplication extends Application {
-    private FishCrackerController controller;
-
-    private final Cracker cracker = new Cracker();
-    private final MeasurmentParser measurmentParser = new MeasurmentParser();
-
     @Override
     public void start(Stage stage) throws IOException {
         // load icon resource
@@ -26,8 +19,6 @@ public class FishCrackerApplication extends Application {
 
         FXMLLoader fxmlLoader = new FXMLLoader(FishCrackerApplication.class.getResource("fish-cracker-view.fxml"));
         AnchorPane rootPane = fxmlLoader.load();
-        this.controller = fxmlLoader.getController();
-        this.controller.bindCrackerInstance(cracker);
 
         Scene scene = new Scene(rootPane, 480, 300);
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("dark-mode.css")).toExternalForm());

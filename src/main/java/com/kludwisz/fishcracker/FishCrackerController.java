@@ -3,6 +3,8 @@ package com.kludwisz.fishcracker;
 import com.kludwisz.fishcracker.cracker.Cracker;
 import com.kludwisz.fishcracker.cracker.CrackingFailedException;
 import com.kludwisz.fishcracker.cracker.LikelyStructure;
+import com.kludwisz.fishcracker.math.Line;
+import com.kludwisz.fishcracker.measurment.MeasurmentParser;
 import com.seedfinding.mccore.util.math.NextLongReverser;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -13,22 +15,53 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
 public class FishCrackerController {
+    private final Cracker cracker = new Cracker();
+    private final MeasurmentParser measurmentParser = new MeasurmentParser();
+
     @FXML private Label angleDisplay;
     @FXML private VBox structureContainer;
     @FXML private Label collectedInfoLabel;
     @FXML private ProgressBar collectedInfoBar;
-    @FXML private Label resultDisplay;
-    private Cracker cracker;
 
+    @FXML private void addMeasurementAction() {
+        try {
+            // get text from system clipboard
+            Clipboard cb = Toolkit.getDefaultToolkit().getSystemClipboard();
+            String txt = (String)cb.getData(DataFlavor.stringFlavor);
 
-    public void bindCrackerInstance(Cracker cracker) {
-        this.cracker = cracker;
+            Line line = measurmentParser.parseMeasurment(txt);
+            if (line == null)
+                throw new IllegalArgumentException("Invalid angle");
+
+            if (angleDisplay.getText().equals(txt))
+                return;
+
+            angleDisplay.setText(txt);
+            cracker.addLineConstraint(line);
+            this.displayModel(cracker.getStructureModel());
+        }
+        catch (IllegalArgumentException ex) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Invalid angle");
+            alert.setHeaderText("The angle you entered is invalid.");
+            alert.showAndWait();
+        }
+        catch (IOException | UnsupportedFlavorException ex) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Could not read clipboard");
+            alert.setHeaderText("The application could not access your clipboard.");
+            alert.showAndWait();
+        }
     }
 
     @FXML private void resetCrackerAction() {
@@ -47,7 +80,7 @@ public class FishCrackerController {
         try {
             List<Long> worldseeds = cracker.getStructreSeeds().stream()
                     .flatMap(seed -> NextLongReverser.getNextLongEquivalents(seed).stream())
-                    .filter(seed -> cracker.testFullWorldSeed(seed))
+                    .filter(cracker::testFullWorldSeed)
                     .toList();
             if (worldseeds.isEmpty())
                 throw new CrackingFailedException("No valid world seeds found");
@@ -92,17 +125,15 @@ public class FishCrackerController {
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new java.awt.datatransfer.StringSelection(string), null);
     }
 
-    public void displayText(String result) {
-        resultDisplay.setText(result);
-    }
-
     public void addStructureEntry(HBox entry) {
         structureContainer.getChildren().add(entry);
     }
 
     public void removeStructureEntry(int index) {
-        if (index >= 0 && index < structureContainer.getChildren().size())
+        if (index >= 0 && index < structureContainer.getChildren().size()) {
             structureContainer.getChildren().remove(index);
+            cracker.removeStructureFromModel(index);
+        }
     }
 
     public void updateCollectedInfo(double bits) {
@@ -134,14 +165,23 @@ public class FishCrackerController {
     @FXML public void helpMenu() {
         Alert saveError = new Alert(Alert.AlertType.INFORMATION);
         saveError.setTitle("Help");
-        saveError.setContentText("Give a dolphin raw fish and measure the angle using F3+C. Once you've collected enough information (~46 bits or more), click \"Actions -> Run Cracker\" to find possible world seeds.");
+        saveError.setHeaderText("FishCracker v1.0");
+        saveError.setContentText(
+                """
+                Give a dolphin raw fish and measure the angle using F3+C.
+                Use the "Add Measurement" button to input your last measurement into the cracker.
+                Once you've collected enough information (~46 bits or more),
+                click "Actions -> Run Cracker" to find possible world seeds.
+                """
+        );
         saveError.showAndWait();
     }
 
     @FXML public void aboutMenu() {
         Alert saveError = new Alert(Alert.AlertType.INFORMATION);
         saveError.setTitle("About");
-        saveError.setContentText("FishCracker v1.0: a silly April Fools project that lets you crack Minecraft seeds using raw fish and dolphins.");
+        saveError.setHeaderText("FishCracker v1.0");
+        saveError.setContentText("a silly April Fools project that lets you\ncrack Minecraft seeds using raw fish and dolphins.");
         saveError.showAndWait();
     }
 }

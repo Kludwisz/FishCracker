@@ -180,5 +180,11 @@ public class Cracker {
         return true;
     }
 
+    public void removeStructureFromModel(int index) {
+        if (currentModel != null) {
+            currentModel.structures().remove(index);
+        }
+    }
+
     public record StructureModel(List<LikelyStructure> structures, double bits) {}
 }
