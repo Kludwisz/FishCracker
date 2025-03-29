@@ -131,4 +131,18 @@ public class FishCrackerController {
             this.addStructureEntry(entry);
         }
     }
+
+    @FXML public void helpMenu() {
+        Alert saveError = new Alert(Alert.AlertType.INFORMATION);
+        saveError.setTitle("Help");
+        saveError.setContentText("Give a dolphin raw fish and measure the angle using F3+C. Once you've collected enough information (~46 bits or more), click \"Actions -> Run Cracker\" to find possible world seeds.");
+        saveError.showAndWait();
+    }
+
+    @FXML public void aboutMenu() {
+        Alert saveError = new Alert(Alert.AlertType.INFORMATION);
+        saveError.setTitle("About");
+        saveError.setContentText("FishCracker v1.0: a silly April Fools project that lets you crack Minecraft seeds using raw fish and dolphins.");
+        saveError.showAndWait();
+    }
 }
