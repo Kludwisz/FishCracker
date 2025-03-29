@@ -3,7 +3,7 @@ plugins {
     id 'application'
     id 'org.javamodularity.moduleplugin' version '1.8.12'
     id 'org.openjfx.javafxplugin' version '0.0.13'
-    id 'org.beryx.jlink' version '2.25.0'
+    id 'org.beryx.jlink' version '3.1.1'
 }
 
 group 'com.kludwisz'
@@ -19,8 +19,8 @@ ext {
 }
 
 java {
-    sourceCompatibility = '17'
-    targetCompatibility = '17'
+    sourceCompatibility = '21'
+    targetCompatibility = '21'
 }
 
 tasks.withType(JavaCompile) {
@@ -39,7 +39,6 @@ javafx {
 
 dependencies {
     implementation('org.controlsfx:controlsfx:11.1.2')
-    implementation("com.github.kwhat:jnativehook:2.2.2")
 
     implementation('com.seedfinding:mc_math:1.171.0') { transitive = false }
     implementation('com.seedfinding:mc_seed:1.171.1') { transitive = false }

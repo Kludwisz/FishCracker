@@ -1,16 +1,12 @@
 package com.kludwisz.fishcracker;
 
-import com.kludwisz.fishcracker.controls.GlobalKeyListener;
 import com.kludwisz.fishcracker.cracker.Cracker;
-import com.kludwisz.fishcracker.math.Line;
 import com.kludwisz.fishcracker.measurment.MeasurmentParser;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.input.Clipboard;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -30,7 +26,6 @@ public class FishCrackerApplication extends Application {
 
         FXMLLoader fxmlLoader = new FXMLLoader(FishCrackerApplication.class.getResource("fish-cracker-view.fxml"));
         AnchorPane rootPane = fxmlLoader.load();
-        Label angleDisplay = (Label) rootPane.lookup("#angleDisplay");
         this.controller = fxmlLoader.getController();
         this.controller.bindCrackerInstance(cracker);
 
@@ -41,41 +36,10 @@ public class FishCrackerApplication extends Application {
         stage.setScene(scene);
         stage.show();
 
-        this.setupF3CListener(angleDisplay);
-        rootPane.requestFocus(); // for handling key events
-
         // set custom app exit behavior
         stage.setOnCloseRequest(e -> {
-            GlobalKeyListener.stop();
             Platform.exit();
             System.exit(0);
         });
-    }
-
-    private void setupF3CListener(Label angleDisplay) {
-        GlobalKeyListener f3cListener = new GlobalKeyListener();
-        f3cListener.setF3CAction(
-                v -> {
-                    // wait for clipboard content update (very, very bad coding practice)
-                    try { Thread.sleep(10); } catch (InterruptedException ignored) {}
-                    Platform.runLater(() -> {
-                        Clipboard clipboard = Clipboard.getSystemClipboard();
-                        String content = clipboard.getString();
-                        Line line = measurmentParser.parseMeasurment(content);
-                        cracker.addLineConstraint(line);
-                        Cracker.StructureModel model = cracker.getStructureModel();
-                        controller.displayModel(model);
-
-                        if (line != null) {
-                            System.out.println("correct measurment");
-                            angleDisplay.setText(line.toString());
-                        } else {
-                            System.out.println("failed measurment");
-                            angleDisplay.setText("...");
-                        }
-                    });
-                }
-        );
-        GlobalKeyListener.register(f3cListener);
     }
 }

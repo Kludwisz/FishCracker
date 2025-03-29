@@ -33,7 +33,12 @@
       </HBox>
       <VBox alignment="TOP_CENTER" layoutX="200.0" layoutY="125.0" prefHeight="294.0" prefWidth="600.0" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
          <children>
-            <Label text="Measure a dangle (dolphin angle) with F3+C:" />
+            <HBox alignment="CENTER" prefHeight="55.0" prefWidth="600.0">
+               <children>
+                  <Label text="Measure a dangle (dolphin angle) with F3+C, then click here:    " />
+                  <Button mnemonicParsing="false" text="Add Measurement" />
+               </children>
+            </HBox>
             <Label fx:id="angleDisplay" text="..." />
             <Label fx:id="resultDisplay" alignment="CENTER" prefHeight="74.0" prefWidth="222.0" text="..." textAlignment="CENTER" wrapText="true" />
             <VBox fx:id="structureContainer" prefHeight="200.0" prefWidth="100.0" />
