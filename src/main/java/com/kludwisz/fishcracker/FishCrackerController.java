@@ -73,6 +73,9 @@ public class FishCrackerController {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             this.cracker.reset();
+            this.angleDisplay.setText("...");
+            this.structureContainer.getChildren().clear();
+            this.updateCollectedInfo(0.0);
         }
     }
 
