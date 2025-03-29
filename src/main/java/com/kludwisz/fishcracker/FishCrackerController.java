@@ -165,7 +165,7 @@ public class FishCrackerController {
     @FXML public void helpMenu() {
         Alert saveError = new Alert(Alert.AlertType.INFORMATION);
         saveError.setTitle("Help");
-        saveError.setHeaderText("FishCracker v1.0");
+        saveError.setHeaderText(FishCrackerApplication.NAME);
         saveError.setContentText(
                 """
                 Give a dolphin raw fish and measure the angle using F3+C.
@@ -180,7 +180,7 @@ public class FishCrackerController {
     @FXML public void aboutMenu() {
         Alert saveError = new Alert(Alert.AlertType.INFORMATION);
         saveError.setTitle("About");
-        saveError.setHeaderText("FishCracker v1.0");
+        saveError.setHeaderText(FishCrackerApplication.NAME);
         saveError.setContentText("a silly April Fools project that lets you\ncrack Minecraft seeds using raw fish and dolphins.");
         saveError.showAndWait();
     }

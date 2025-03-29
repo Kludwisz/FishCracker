@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class FishCrackerApplication extends Application {
+    public static final String NAME = "FishCracker v1.1";
+
     @Override
     public void start(Stage stage) throws IOException {
         // load icon resource
@@ -23,7 +25,7 @@ public class FishCrackerApplication extends Application {
         Scene scene = new Scene(rootPane, 480, 300);
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("dark-mode.css")).toExternalForm());
 
-        stage.setTitle("FishCracker v1.0");
+        stage.setTitle(FishCrackerApplication.NAME);
         stage.setScene(scene);
         stage.show();
 
