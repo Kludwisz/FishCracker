@@ -1,7 +1,6 @@
 package com.kludwisz.fishcracker;
 
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -28,11 +27,5 @@ public class FishCrackerApplication extends Application {
         stage.setTitle(FishCrackerApplication.NAME);
         stage.setScene(scene);
         stage.show();
-
-        // set custom app exit behavior
-        stage.setOnCloseRequest(e -> {
-            Platform.exit();
-            System.exit(0);
-        });
     }
 }
