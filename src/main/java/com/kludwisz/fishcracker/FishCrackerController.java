@@ -64,6 +64,11 @@ public class FishCrackerController {
         }
     }
 
+    @FXML private void undoLastMeasurementAction() {
+        cracker.removeLastLineConstraint();
+        this.displayModel(cracker.getStructureModel());
+    }
+
     @FXML private void resetCrackerAction() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirm Reset");

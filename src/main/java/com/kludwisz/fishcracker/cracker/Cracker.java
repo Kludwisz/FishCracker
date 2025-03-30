@@ -44,7 +44,6 @@ public class Cracker {
                 Line line2 = measuredLines.get(j);
                 Vec2 intersection = line1.intersection(line2);
                 if (intersection != null) {
-//                    System.out.println("intersection: " + intersection + " of lines " + line1 + " " + line2);
                     intersections.add(intersection);
                 }
             }
@@ -61,9 +60,6 @@ public class Cracker {
             (int) intersections.stream().filter(i -> i.distanceToSq(b) < maxSq).count(),
             (int) intersections.stream().filter(i -> i.distanceToSq(a) < maxSq).count()
         ));
-//        for (Vec2 intersection : sortedIntersections) {
-//            System.out.println(intersection + " " + intersections.stream().filter(i -> i.distanceToSq(intersection) < maxSq).count());
-//        }
 
         boolean[] usedPoints = new boolean[intersections.size()];
         for (int i = 0; i < sortedIntersections.size(); i++) {
@@ -183,6 +179,14 @@ public class Cracker {
     public void removeStructureFromModel(int index) {
         if (currentModel != null) {
             currentModel.structures().remove(index);
+            // not setting the model to null to actually use the remaining information
+        }
+    }
+
+    public void removeLastLineConstraint() {
+        if (!measuredLines.isEmpty()) {
+            measuredLines.removeLast();
+            currentModel = null;
         }
     }
 

@@ -36,7 +36,8 @@
             <HBox alignment="CENTER" prefHeight="55.0" prefWidth="600.0">
                <children>
                   <Label text="Measure a dangle (dolphin angle) with F3+C, then click here:    " />
-                  <Button mnemonicParsing="false" text="Add Measurement" onAction="#addMeasurementAction"/>
+                  <Button mnemonicParsing="false" onAction="#addMeasurementAction" text="Add Measurement" />
+                  <Button mnemonicParsing="false" onAction="#undoLastMeasurementAction" text="Undo" />
                </children>
             </HBox>
             <Label fx:id="angleDisplay" text="..." />
